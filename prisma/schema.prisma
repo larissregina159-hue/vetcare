@@ -3,31 +3,32 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Usuario {
-  id        Int      @id @default(autoincrement())
-  nome      String
-  email     String   @unique
-  senha     String
-  criadoEm  DateTime @default(now())
+  id       Int      @id @default(autoincrement())
+  nome     String
+  email    String   @unique
+  senha    String
+  criadoEm DateTime @default(now())
 }
 
 model Cliente {
-  id        Int      @id @default(autoincrement())
-  nome      String
-  cpf       String   @unique
-  email     String   @unique
-  telefone  String
-  criadoEm  DateTime @default(now())
+  id       Int      @id @default(autoincrement())
+  nome     String
+  cpf      String   @unique
+  email    String   @unique
+  telefone String
+  criadoEm DateTime @default(now())
 
-  animais   Animal[]
+  animais Animal[]
 }
 
 model Animal {
-  id             Int          @id @default(autoincrement())
+  id             Int      @id @default(autoincrement())
   clienteId      Int
   nome           String
   especie        String
@@ -38,47 +39,47 @@ model Animal {
   cor            String?
   observacoes    String?
 
-  cliente        Cliente      @relation(fields: [clienteId], references: [id])
-  consultas      Consulta[]
-  prontuarios    Prontuario[]
+  cliente     Cliente      @relation(fields: [clienteId], references: [id])
+  consultas   Consulta[]
+  prontuarios Prontuario[]
 }
 
 model Veterinario {
-  id            Int         @id @default(autoincrement())
+  id            Int     @id @default(autoincrement())
   nome          String
-  crmv          String      @unique
+  crmv          String  @unique
   especialidade String?
-  email         String      @unique
+  email         String  @unique
   telefone      String?
 
-  consultas     Consulta[]
+  consultas Consulta[]
 }
 
 model Consulta {
-  id             Int          @id @default(autoincrement())
-  animalId       Int
-  veterinarioId  Int
-  dataConsulta   DateTime
-  motivo         String
-  observacoes    String?
-  valor          Float
-  status         String       @default("Agendada")
+  id            Int      @id @default(autoincrement())
+  animalId      Int
+  veterinarioId Int
+  dataConsulta  DateTime
+  motivo        String
+  observacoes   String?
+  valor         Float
+  status        String   @default("Agendada")
 
-  animal         Animal       @relation(fields: [animalId], references: [id])
-  veterinario    Veterinario  @relation(fields: [veterinarioId], references: [id])
-  prontuario     Prontuario?
+  animal      Animal      @relation(fields: [animalId], references: [id])
+  veterinario Veterinario @relation(fields: [veterinarioId], references: [id])
+  prontuario  Prontuario?
 }
 
 model Prontuario {
-  id          Int       @id @default(autoincrement())
-  animalId    Int
-  consultaId  Int       @unique
-  diagnostico String
-  tratamento  String?
+  id           Int      @id @default(autoincrement())
+  animalId     Int
+  consultaId   Int      @unique
+  diagnostico  String
+  tratamento   String?
   medicamentos String?
-  observacoes String?
+  observacoes  String?
   dataRegistro DateTime @default(now())
 
-  animal      Animal    @relation(fields: [animalId], references: [id])
-  consulta    Consulta  @relation(fields: [consultaId], references: [id])
+  animal   Animal   @relation(fields: [animalId], references: [id])
+  consulta Consulta @relation(fields: [consultaId], references: [id])
 }

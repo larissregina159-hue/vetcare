@@ -1,5 +1,16 @@
-node_modules/
 dist/
+
 .env
+
 prisma/dev.db
 prisma/dev.db-journal
+
+node_modules/
+
+npm-debug.log*
+*.log
+
+.DS_Store
+
+.vscode/*
+!.vscode/extensions.json
