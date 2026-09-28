@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+﻿import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 type TokenPayload = {
@@ -43,7 +43,7 @@ export function authMiddleware(
       nome: '',
     };
 
-    next();
+    return next();
   } catch {
     return res.status(401).json({
       erro: 'Token inválido ou expirado.',
